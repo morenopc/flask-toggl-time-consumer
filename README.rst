@@ -30,7 +30,8 @@ Run
 ---
 
 ::
-
+    # TOGGL API TOKEN
+    (venv) $ export TOGGL_API_KEY=<your toggl API key>
     (venv) $ export FLASK_APP=task.py
     (venv) $ flask run
 
@@ -45,3 +46,12 @@ Database Migration
     (venv) $ export FLASK_APP=task.py
     (venv) $ flask db migrate
     (venv) $ flask db upgrade
+
+
+Cron
+----
+
+::
+
+    # cron task to run each 15 minute
+    0,15,30,45 * * * * <path to> run_toggl_api.sh

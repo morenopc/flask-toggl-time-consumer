@@ -40,7 +40,7 @@ class Project(db.Model):
     workspace_id = db.Column(db.Integer, db.ForeignKey('workspace.id'))
     client_id = db.Column(db.Integer, db.ForeignKey('client.id'))
     status = db.Column(db.Integer, default=0)
-    members = db.relationship('Member', secondary=members, lazy='subquery',
+    members = db.relationship('Member', secondary=members, lazy='dynamic',
                               backref=db.backref('projects', lazy=True))
 
     def __repr__(self):
@@ -53,6 +53,7 @@ class Task(db.Model):
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
     start = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     end = db.Column(db.DateTime)
+    duration = db.Column(db.Integer, default=0)
 
     def __repr__(self):
         return '<Task {} {}>'.format(self.name, self.start, self.end)
