@@ -18,9 +18,10 @@ def index():
 
     entries = db.session.query(
         Task, Project, Client).order_by(
-            desc(Task.start)).order_by(
-            desc(Task.duration)).order_by(
-            Project.name).join(Project).join(Client).all()
+            desc(Task.start)).order_by(     # month (descending)
+            desc(Task.duration)).order_by(  # task time (descending)
+            Project.name                    # project name (alphabetically)
+    ).join(Project).join(Client).all()
 
     return render_template(
         'index.html', title='Time Consumer Tasks', entries=entries)
@@ -34,10 +35,10 @@ def time_consuming_form():
 
     entries = db.session.query(
         Task, Project, Client).order_by(
-            desc(Task.start)).order_by(
-            desc(Task.duration)).order_by(
-            Project.name).filter(
-        Task.duration >= millisec).join(Project).join(Client).all()
+            desc(Task.start)).order_by(     # month (descending)
+            desc(Task.duration)).order_by(  # task time (descending)
+            Project.name                    # project name (alphabetically)
+    ).filter(Task.duration >= millisec).join(Project).join(Client).all()
 
     return render_template(
         'index.html', title='Time Consumer Tasks', entries=entries, value=hours)
