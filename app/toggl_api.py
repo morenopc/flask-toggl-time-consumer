@@ -30,7 +30,7 @@ PARAMET_URL = urllib.parse.urlencode({
 })
 
 
-def toggl_api():
+def toggl_api(duration=None):
     # GET all Workspace members
     users = toggl.request(''.join([WORKSPACES_URL, str(workspace.id), '/users']))
     for user in users:
@@ -47,7 +47,7 @@ def toggl_api():
 
         client = Client.query.filter_by(name=data.get('client')).first()
         if client is None:
-            client = Client(name=data.get('client'))
+            client = Client(name=data.get('client') or '(no client)')
             db.session.add(client)
 
         member = Member.query.filter_by(id=data.get('uid')).first()
@@ -57,20 +57,24 @@ def toggl_api():
 
         project = Project.query.filter_by(id=data.get('pid')).first()
         if project is None:
+
             project = Project(
-                id=data.get('pid'),
-                name=data.get('project'),
+                name=data.get('project') or '(without a project)',
                 workspace_id=workspace.id,
                 client_id=client.id)
 
-            # GET all Project members
-            project_users = toggl.request(''.join(
-                [PROJECTS_URL, str(project.id), '/project_users']))
-            for user in project_users:
-                member = Member.query.filter_by(id=user.get('uid')).first()
-                project.members.append(member)
+            if data.get('pid') is not None:
+                project.id = data.get('pid')
+
+                # GET all Project members
+                project_users = toggl.request(''.join(
+                    [PROJECTS_URL, str(data.get('pid')), '/project_users']))
+                for user in project_users:
+                    member = Member.query.filter_by(id=user.get('uid')).first()
+                    project.members.append(member)
 
             db.session.add(project)
+            db.session.commit()
 
         if data.get('dur') > DEFAULT_LONG_TASK:
             task = Task.query.filter_by(id=data.get('id')).first()
@@ -84,4 +88,4 @@ def toggl_api():
                     duration=data.get('dur'))
                 db.session.add(task)
 
-        db.session.commit()
+    db.session.commit()

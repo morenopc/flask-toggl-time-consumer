@@ -1,5 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2>Time Consumer Tasks Table</h2>
+  <h1>Time Consumer Tasks Table</h1>
+  <p class="lead">Since time-consumers tasks are an indication of a problem with that task, <br> we want to have a tool that allows to easily identify them.</p>
+  <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Task</th>
+      <th scope="col">Description</th>
+      <th scope="col">Duration</th>
+      <th scope="col">Project</th>
+      <th scope="col">Client</th>
+      <th scope="col">Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for task, project, client in entries%}
+    <tr>
+      <th scope="row">{{ task.id }}</th>
+      <td>{{ task.name }}</td>
+      <td>{{ task.duration/1000/60/60 }} h</td>
+      <td>{{ project.name }}</td>
+      <td>{{ client.name }}</td>
+      <td>{{ task.start.strftime('%B-%d') }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}
