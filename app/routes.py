@@ -24,7 +24,7 @@ def index():
     ).join(Project).join(Client).all()
 
     return render_template(
-        'index.html', title='Time Consumer Tasks', entries=entries)
+        'index.html', title='Time Consuming Tasks', entries=entries)
 
 
 @app.route('/time-consuming')
@@ -41,4 +41,4 @@ def time_consuming_form():
     ).filter(Task.duration >= millisec).join(Project).join(Client).all()
 
     return render_template(
-        'index.html', title='Time Consumer Tasks', entries=entries, value=hours)
+        'index.html', title='Time Consuming Tasks', entries=entries, value=hours)
