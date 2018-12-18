@@ -29,9 +29,9 @@ Run
 ---
 
 ::
+    # (venv) $ export FLASK_ENV=development
     # TOGGL API TOKEN
     (venv) $ export TOGGL_API_KEY=<your toggl API key>
-    # (venv) $ export FLASK_ENV=development
     (venv) $ export FLASK_APP=task.py
     (venv) $ flask run
 
