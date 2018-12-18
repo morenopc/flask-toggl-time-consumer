@@ -74,3 +74,10 @@ Cron
 
     # cron task to run each 15 minute
     0,15,30,45 * * * * <path to> run_toggl_api.sh
+
+Tests
+-----
+
+::
+
+    (venv) $ python -m pytest tests/
