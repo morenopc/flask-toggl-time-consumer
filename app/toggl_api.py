@@ -12,27 +12,30 @@ toggl.setAPIKey(TOGGL_API_KEY)
 
 DEFAULT_LONG_TASK = 3600000  # 1 hour
 
-# check WorkSpace
 WORKSPACE_ID = 3122278
-workspace = Workspace.query.filter_by(name='Vitamin').first()
-if workspace is None:
-    workspace = Workspace(id=WORKSPACE_ID, name='Vitamin')
-    db.session.add(workspace)
-    db.session.commit()
 
 USER_AGENT = 'api_test'
 REPORTS_URL = 'https://toggl.com/reports/api/v2/'
 WORKSPACES_URL = 'https://www.toggl.com/api/v8/workspaces/'
 PROJECTS_URL = 'https://www.toggl.com/api/v8/projects/'
-PARAMET_URL = urllib.parse.urlencode({
-    'workspace_id': workspace.id,
-    'since': '2018-09-01T00:00:00Z',  # Sep 2018
-    'until': '2018-10-31T00:00:00Z',  # Out 2010
-    'user_agent': USER_AGENT,
-})
 
 
 def toggl_api(duration=None):
+
+    # Check WorkSpace
+    workspace = Workspace.query.filter_by(name='Vitamin').first()
+    if workspace is None:
+        workspace = Workspace(id=WORKSPACE_ID, name='Vitamin')
+        db.session.add(workspace)
+        db.session.commit()
+
+    PARAMET_URL = urllib.parse.urlencode({
+        'workspace_id': workspace.id,
+        'since': '2018-09-01T00:00:00Z',  # Sep 2018
+        'until': '2018-10-31T00:00:00Z',  # Out 2010
+        'user_agent': USER_AGENT,
+    })
+
     # GET all Workspace members
     users = toggl.request(''.join([WORKSPACES_URL, str(workspace.id), '/users']))
     for user in users:
