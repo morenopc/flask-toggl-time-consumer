@@ -23,7 +23,7 @@ PROJECTS_URL = 'https://www.toggl.com/api/v8/projects/'
 def toggl_api(duration=None):
 
     # Check WorkSpace
-    workspace = Workspace.query.filter_by(name='Vitamin').first()
+    workspace = Workspace.query.filter_by(id=WORKSPACE_ID).first()
     if workspace is None:
         workspace = Workspace(id=WORKSPACE_ID, name='Vitamin')
         db.session.add(workspace)
